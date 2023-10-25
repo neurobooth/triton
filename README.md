@@ -21,8 +21,8 @@ ln -s /space/neo/4/.singularity ~/.singularity
 Images cannot be built on the cluster without `sudo` privleges. Instead, the image can be built on a development machine and uploaded to the cluster. See the [Singularity docs](https://docs.sylabs.io/guides/3.0/user-guide/installation.htm) for OS-dependent installation for your local machine; these steps are enumerated below for Windows.
 
 The following examples may be helpful, though the `.def` file takes tips from several sources. Importantly, we do not use an Nvidia-provided base docker image because it 1) takes a long time to download and presented (potentially VM-related) issues when generating a `.sif` file and 2) PyTorch handles isstallation of CUDA and cuDNN, so we can keep the base image lighter.
-    - <https://github.com/sylabs/examples/blob/master/machinelearning/intel-tensorflow/Singularity.mkl.def>
-    - <https://github.com/bdusell/singularity-tutorial>
+- <https://github.com/sylabs/examples/blob/master/machinelearning/intel-tensorflow/Singularity.mkl.def>
+- <https://github.com/bdusell/singularity-tutorial>
 
 ### Singularity Installation on Windows
 If on Linux or Mac, read the Singularity docs. For Linux, you need `sudo`. You can also potentially skip this by exploring the free Singularity remote build server. The following is what worked for building the image on Windows. In a nutshell, we will use a prebuilt image to run a VM with singularity installed. From within the VM, we can then build a Singularity image from the `.def` file on Windows.
