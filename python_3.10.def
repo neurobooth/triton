@@ -1,0 +1,52 @@
+Bootstrap: docker
+From: nvidia/cuda:12.1.1-cudnn8-devel-ubuntu22.04
+
+%help
+    This Singularity definitions defines a container that runs Python 3.10 with Nvidia GPU support (CUDA 12.1.1 and cuDNN 8). Python libraries should be installed via pipenv.
+
+    Example command to install libraries:
+    singularity exec python_3.10.sif pipenv install torch numpy lightning
+
+    Example command to run a Python script with GPU support:
+    singularity exec --nv python_3.10.sif pipenv run python main.py
+
+%post -c /bin/bash
+    # Download latest packages
+    apt-get update && apt-get install -y --no-install-recommends --fix-missing software-properties-common
+
+    # Add repository with various Python versions
+    add-apt-repository ppa:deadsnakes/ppa -y
+
+    # Install Python 3.10 and required build tools
+    DEBIAN_FRONTEND=noninteractiv apt-get install -y --no-install-recommends --fix-missing \
+    python3.10 \
+    libpython3.10 \
+    python3.10-distutils \
+    python3-pip \
+    build-essential \
+    zlib1g-dev \
+    libncurses5-dev \
+    libgdbm-dev \
+    libnss3-dev \
+    libssl-dev \
+    libsqlite3-dev \
+    libreadline-dev \
+    libffi-dev \
+    curl \
+    libbz2-dev \
+    pkg-config \
+    make \
+    rsync
+    
+    # Reduce the size of the image by deleting the package lists we downloaded, which are useless now.
+    apt-get clean && rm -rf /var/lib/apt/lists/*
+
+%environment
+    # Pipenv requires a certain terminal encoding
+    export LANG=C.UTF-8
+    export LC_ALL=C.UTF-8
+    # Configure Pipenv to store the packages in the current working directory
+    export PIPENV_VENV_IN_PROJECT=1
+
+%test
+    python3.10 --version
