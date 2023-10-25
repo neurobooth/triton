@@ -86,7 +86,14 @@ Other tools, such as `sftp` or `scp`, may be used if you do not have `rsync` ins
 ## Installing/Updating Python Libraries
 **This step is only necessary if updating the Python libraries or for first-time setup of a new project.**
 
-The Python libraries needed by the image are specified in the project's `Pipfile`. To generate a new `Pipfile` on the cluster, first `cd` to your project directory (e.g., `/space/drwho/3/neurobooth/applications/triton_server`) and run the following command (modifying the package list as necessary):
+For this project, you can log into the cluster `cd /space/drwho/3/neurobooth/applications/triton_server/`,  then run `./install_python_libs.sh`.
+The below section explains some of what is going on in this script.
+
+**After updating the libraries, you should check the new `Pipfile` and `Pipfile.lock` files into your code repository.**
+
+### Manual Installation / Explanation
+The Python libraries needed by the image are specified in the project's `Pipfile`. 
+To generate a new `Pipfile` on the cluster, first `cd` to your project directory (e.g., `/space/drwho/3/neurobooth/applications/triton_server`) and run the following command (modifying the package list as necessary):
 ```bash
 HARG=$(pwd)  # Store the absolute path to your current directory
 singularity exec -H $HARG /space/neo/4/sif/python_3.10.sif pipenv install \
@@ -108,15 +115,23 @@ The `-H $HARG` is necessary for this to work as intended. By default, Singularit
 You can then validate that GPU support is enabled with the following command:
 ```bash
 singularity exec -H $HARG --nv /space/neo/4/sif/python_3.10.sif pipenv run \
-python -c "import torch; print(f'GPU Enabled: {torch.cuda.is_available()}, # GPUs={torch.cuda.device_count()}')"
+python -c "import torch; print(f'GPU Enabled: {torch.cuda.is_available()}, # GPUs: {torch.cuda.device_count()}')"
 ```
 
-After updating the libraries, you should check the new `Pipfile` and `Pipfile.lock` files into your code reposititory.
+To install local code repos (via `pip -e`), you need to make sure their location on the host file system is mounted to
+the singularity container using the `--bind` argument. For example:
+```bash
+singularity exec \
+-H $(pwd) \
+--bind "/space/neo/3/neurobooth/applications/neurobooth-analysis-tools:/dep/neurobooth-analysis-tools" \
+/space/neo/4/sif/python_3.10.sif \
+pipenv install -e /dep/neurobooth-analysis-tools
+```
 
 ## Starting the Server
-_TODO_: Uodate this section with project-specific details
+_TODO_: Update this section with project-specific details
 
 Run a python script with:
 ```bash
-singularity exec -H $(pwd) --nv /space/neo/4/sif/python_3.10.sif pipenv run script.py
+./singularity_exec.sh pipenv run python script.py
 ```

@@ -16,6 +16,8 @@ torchmetrics = "*"
 pydantic = ">=2.0"
 pyyaml = "*"
 tqdm = "*"
+mvmt-disord-gaze-analysis = {file = "../../../../../../dep/gaze_analysis"}
+neurobooth-analysis-tools = {file = "../../../../../../dep/neurobooth-analysis-tools", editable = true}
 
 [dev-packages]
 
