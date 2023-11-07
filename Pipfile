@@ -4,6 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
+setuptools = "*"
 numpy = "*"
 scipy = ">=1.10"
 pandas = "*"
@@ -16,8 +17,9 @@ torchmetrics = "*"
 pydantic = ">=2.0"
 pyyaml = "*"
 tqdm = "*"
-mvmt-disord-gaze-analysis = {file = "../../../../../../dep/gaze_analysis"}
-neurobooth-analysis-tools = {file = "../../../../../../dep/neurobooth-analysis-tools", editable = true}
+neurobooth-analysis-tools = {path = "/dep/neurobooth-analysis-tools", editable = true}
+mvmt-disord-gaze-analysis = {path = "/dep/gaze_analysis", editable = true}
+pytriton-inference-server = {path = ".", editable = true}
 
 [dev-packages]
 
