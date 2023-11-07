@@ -135,3 +135,14 @@ Run a python script with:
 ```bash
 ./singularity_exec.sh pipenv run python script.py
 ```
+
+## Monitoring the Server
+Server status can be queried via:
+```bash
+curl -v localhost:8000/v2/health/live
+```
+
+The stats of a model can be queried via:
+```bash
+curl -v localhost:8000/v2/models/model_name/ready
+```

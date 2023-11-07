@@ -8,6 +8,7 @@
 set -e
 
 # Install from the Pipfile
+# Make sure local code bases are mapped in the in the --bind argument (see env.sh)
 ./singularity_exec.sh pipenv install
 
 # Test the environment

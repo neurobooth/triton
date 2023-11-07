@@ -1,0 +1,6 @@
+log_dir: ./logs
+models:
+  saccade_v0:
+    class_name: inference_server.models.uneye_saccade.UNEyeSaccadeDetector
+    weights_file: models/uneye_saccade_v000_fold=0_epoch=194.ckpt
+    gpu: 3  # This machine has 4 GPUs; use the last one
