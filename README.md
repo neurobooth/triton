@@ -129,9 +129,12 @@ pipenv install -e /dep/neurobooth-analysis-tools
 ```
 
 ## Starting the Server
-_TODO_: Update this section with project-specific details
+To start the server, execute `./run_server.sh`.
 
-Run a python script with:
+_Note_: To run as a service, `triton.serve()` will need to be replaced with `triton.run()`, and the container will need
+to be started as a service.
+
+A python script can be run in the Singularity container with:
 ```bash
 ./singularity_exec.sh pipenv run python script.py
 ```
