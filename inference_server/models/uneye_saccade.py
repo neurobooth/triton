@@ -34,7 +34,7 @@ class UNEyeSaccadeDetector(Model):
 
     @batch
     def infer(self, vel: np.ndarray) -> ModelResult:
-        self.logger.debug(f"Received batch of shape {vel.shape}")
+        # self.logger.debug(f"Received batch of shape {vel.shape}")
         vel = torch.from_numpy(vel).to(self.device)  # Move input to GPU
         proba = self.model(vel)  # Run inference
         proba = proba.detach().cpu().numpy()  # Move result to CPU
@@ -47,8 +47,8 @@ class UNEyeSaccadeDetector(Model):
             inputs=[Tensor(name='vel', dtype=np.float32, shape=(2, -1))],
             outputs=[Tensor(name='proba', dtype=np.float32, shape=(2, -1))],
             config=ModelConfig(
-                max_batch_size=64,
-                batcher=DynamicBatcher(max_queue_delay_microseconds=5000),  # 5ms
+                max_batch_size=128,
+                batcher=DynamicBatcher(max_queue_delay_microseconds=int(1e4)),  # 10 ms
             ),
             strict=True,
         )
