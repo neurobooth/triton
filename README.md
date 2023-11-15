@@ -79,9 +79,12 @@ sudo singularity build python_3.10.sif python_3.10.def
 ### Uploading the Image
 Upload the built image (`python_3.10.sif`) to the cluster, replacing your username below:
 ```bash
-rsync --info=progress1 python_3.10.sif bro7@neo.nmr.mgh.harvard.edu:/space/neo/4/sif/python_3.10.sif
+rsync --info=progress1 python_3.10.sif bro7@neo.nmr.mgh.harvard.edu:/vast/neurobooth/sif/python_3.10.sif
 ```
 Other tools, such as `sftp` or `scp`, may be used if you do not have `rsync` installed on your machine. Cygwin provides an `rsync` installation for Windows.
+
+*NOTE:* In the past, storing the image on the same machine running the image (e.g., `/space/neo/4`) has caused server crashes.
+Storing the images under `/vast/neurobooth` sidesteps this issue.
 
 ## Installing/Updating Python Libraries
 **This step is only necessary if updating the Python libraries or for first-time setup of a new project.**
@@ -96,7 +99,7 @@ The Python libraries needed by the image are specified in the project's `Pipfile
 To generate a new `Pipfile` on the cluster, first `cd` to your project directory (e.g., `/space/drwho/3/neurobooth/applications/triton_server`) and run the following command (modifying the package list as necessary):
 ```bash
 HARG=$(pwd)  # Store the absolute path to your current directory
-singularity exec -H $HARG /space/neo/4/sif/python_3.10.sif pipenv install \
+singularity exec -H $HARG /vast/neurobooth/sif/python_3.10.sif pipenv install \
 numpy \
 "scipy>=1.10" \
 pandas \
@@ -114,7 +117,7 @@ The `-H $HARG` is necessary for this to work as intended. By default, Singularit
 
 You can then validate that GPU support is enabled with the following command:
 ```bash
-singularity exec -H $HARG --nv /space/neo/4/sif/python_3.10.sif pipenv run \
+singularity exec -H $HARG --nv /vast/neurobooth/sif/python_3.10.sif pipenv run \
 python -c "import torch; print(f'GPU Enabled: {torch.cuda.is_available()}, # GPUs: {torch.cuda.device_count()}')"
 ```
 
@@ -124,7 +127,7 @@ the singularity container using the `--bind` argument. For example:
 singularity exec \
 -H $(pwd) \
 --bind "/space/neo/3/neurobooth/applications/neurobooth-analysis-tools:/dep/neurobooth-analysis-tools" \
-/space/neo/4/sif/python_3.10.sif \
+/vast/neurobooth/sif/python_3.10.sif \
 pipenv install -e /dep/neurobooth-analysis-tools
 ```
 
