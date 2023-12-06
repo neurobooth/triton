@@ -4,3 +4,7 @@ models:
     class_name: inference_server.models.uneye_saccade.UNEyeSaccadeDetector
     weights_file: models/uneye_saccade_v000_fold=0_epoch=194.ckpt
     gpu: 3  # This machine has 4 GPUs; use the last one
+  saccade_v2:
+    class_name: inference_server.models.uneye_saccade.UNEyeSaccadeDetector
+    weights_file: models/uneye_saccade_v002_fold=0_epoch=022.ckpt
+    gpu: 3  # This machine has 4 GPUs; use the last one
